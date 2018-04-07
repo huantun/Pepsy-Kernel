@@ -107,6 +107,12 @@ if [ $? != "0" ]; then
 fi;
 
 ui_print " ";
+ui_print "Pushing modules...";
+mount -o rw,remount -t auto /system;
+cp -f /tmp/anykernel/*.ko /system/lib/modules/;
+set_perm_recursive 0 0 0755 0644 /system/lib/modules;
+chcon -R 'u:object_r:system_file:s0' /system/lib/modules;
+mount -o ro,remount -t auto /system;
 sleep 1;
 
 debugging;
