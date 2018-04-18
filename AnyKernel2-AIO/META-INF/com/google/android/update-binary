@@ -109,9 +109,16 @@ fi;
 ui_print " ";
 ui_print "Pushing modules...";
 mount -o rw,remount -t auto /system;
+rm -f /system/vendor/lib/modules/wlan.ko;
+rm -f /system/vendor/lib/modules/qca_cld/qca_cld_wlan.ko
+cp -f /tmp/anykernel/modules/wlan.ko /system/vendor/lib/modules/qca_cld/qca_cld_wlan.ko;
+rm -f /tmp/anykernel/modules/wlan.ko
+ln -sf /system/vendor/lib/modules/qca_cld/qca_cld_wlan.ko /system/vendor/lib/modules/wlan.ko
 cp -f /tmp/anykernel/modules/*.ko /system/lib/modules/;
 set_perm_recursive 0 0 0755 0644 /system/lib/modules;
+set_perm_recursive 0 0 0755 0644 /system/vendor/lib/modules;
 chcon -R 'u:object_r:system_file:s0' /system/lib/modules;
+chcon -R 'u:object_r:vendor_file:s0' /system/vendor/lib/modules;
 mount -o ro,remount -t auto /system;
 sleep 1;
 
